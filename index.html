@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API dos Cachorros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .btn {
+            padding: 5px 10px;
+            color: white;
+            background-color: #333;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background-color: #555;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #eaeaea;
+        }
+        .actions button {
+            padding: 3px 5px;
+            font-size: 0.8em;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            width: 280px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista dos Cachorros</h1>
+    <button class="btn" onclick="exibirFormulario()">Adicionar Cachorro</button>
+    <div id="formulario" style="display: none;">
+        <label>Imagem</label>
+        <input name="imagem" type="text" id="Imagem" /><br />
+        <label>Nome do tutor</label>
+        <input name="dono" type="text" id="Dono" /><br />
+        <label>Nome do cachorro</label>
+        <input name="cachorro" type="text" id="Nome" /><br />
+        <label>Email</label>
+        <input name="email" type="email" id="Email" /><br />
+        <label>Telefone</label>
+        <input name="telefone" type="tel" id="Telefone" /><br />
+       
+        <button class="btn" onclick="adicionarCachorro()">Salvar</button>
+        <button class="btn" onclick="ocultarFormulario()">Cancelar</button>
+    </div>
+    <table id="TabelaDosDogs">
+        <thead>
+            <tr>
+                <th>Imagem</th>
+                <th>Nome do tutor</th>
+                <th>Nome do cachorro</th>
+                <th>Email do tutor</th>
+                <th>Telefone do tutor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            <tr>
+                <td><img src="https://placedog.net/640/480?random=1" alt="Imagem do cachorro" width="50" height="50"></td>
+                <td>Maria Silva</td>
+                <td>Rex</td>
+                <td>maria@gmail.com</td>
+                <td>(11) 98765-4321</td>
+                <td class="actions">
+                    <button onclick="editarCachorro(0)">Editar</button>
+                    <button onclick="excluirCachorro(0)">Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="https://placedog.net/640/480?random=2" alt="Imagem do cachorro" width="50" height="50"></td>
+                <td>João Pereira</td>
+                <td>Bolt</td>
+                <td>joao@gmail.com</td>
+                <td>(11) 98876-5432</td>
+                <td class="actions">
+                    <button onclick="editarCachorro(1)">Editar</button>
+                    <button onclick="excluirCachorro(1)">Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="https://placedog.net/640/480?random=3" alt="Imagem do cachorro" width="50" height="50"></td>
+                <td>Ana Costa</td>
+                <td>Luna</td>
+                <td>ana@gmail.com</td>
+                <td>(11) 98765-1234</td>
+                <td class="actions">
+                    <button onclick="editarCachorro(2)">Editar</button>
+                    <button onclick="excluirCachorro(2)">Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="https://placedog.net/640/480?random=4" alt="Imagem do cachorro" width="50" height="50"></td>
+                <td>Carlos Souza</td>
+                <td>Max</td>
+                <td>carlos@gmail.com</td>
+                <td>(11) 96325-7890</td>
+                <td class="actions">
+                    <button onclick="editarCachorro(3)">Editar</button>
+                    <button onclick="excluirCachorro(3)">Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="https://placedog.net/640/480?random=5" alt="Imagem do cachorro" width="50" height="50"></td>
+                <td>Lucia Gomes</td>
+                <td>Fido</td>
+                <td>lucia@gmail.com</td>
+                <td>(11) 97456-3210</td>
+                <td class="actions">
+                    <button onclick="editarCachorro(4)">Editar</button>
+                    <button onclick="excluirCachorro(4)">Excluir</button>
+                </td>
+            </tr>
+        
+        </tbody>
+    </table>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3>Editar Cachorro</h3>
+            <input type="text" id="editNome" placeholder="Nome do cachorro"><br>
+            <input type="text" id="editDono" placeholder="Nome do tutor"><br>
+            <input type="text" id="editEmail" placeholder="Email do tutor"><br>
+            <input type="text" id="editTelefone" placeholder="Telefone do tutor"><br>
+            <button onclick="salvarEdicao()">Salvar</button>
+            <button onclick="fecharModal()">Cancelar</button>
+        </div>
+    </div>
+    <script>
+        let cachorros = [
+            { imagem: 'https://placedog.net/640/480?random=1', dono: 'Flavin Pneu', nome: 'Rex', email: 'flavin_do_pneu@gmail.com', telefone: '(11) 98765-4321' },
+            { imagem: 'https://placedog.net/640/480?random=2', dono: 'Shaolin Hunter', nome: 'Bolt', email: 'shaolin_matador_de_porco@gmail.com', telefone: '(11) 98876-5432' },
+            { imagem: 'https://placedog.net/640/480?random=3', dono: 'Jhon Kennedy', nome: 'Luna', email: 'jhonkennedy@gmail.com', telefone: '(11) 98765-1234' },
+            { imagem: 'https://placedog.net/640/480?random=4', dono: 'Carlinhos Paiva', nome: 'Max', email: 'carlinhos@gmail.com', telefone: '(11) 96325-7890' },
+            { imagem: 'https://placedog.net/640/480?random=5', dono: 'Thiago Alcantara', nome: 'Fido', email: 'thiaguinho@gmail.com', telefone: '(11) 97456-3210' }
+        ];
+    
+        
+        function preencherTabela() {
+            const tabela = document.getElementById('TabelaDosDogs').getElementsByTagName('tbody')[0];
+            tabela.innerHTML = '';  
+    
+            
+            cachorros.forEach((cachorro, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${cachorro.imagem}" alt="Imagem do cachorro" width="50" height="50"></td>
+                    <td>${cachorro.dono}</td>
+                    <td>${cachorro.nome}</td>
+                    <td>${cachorro.email}</td>
+                    <td>${cachorro.telefone}</td>
+                    <td class="actions">
+                        <button onclick="editarCachorro(${index})">Editar</button>
+                        <button onclick="excluirCachorro(${index})">Excluir</button>
+                    </td>
+                `;
+                tabela.appendChild(tr);
+            });
+        }
+    
+        
+        function adicionarCachorro() {
+            
+            const imagem = document.getElementById('Imagem').value;
+            const dono = document.getElementById('Dono').value;
+            const nome = document.getElementById('Nome').value;
+            const email = document.getElementById('Email').value;
+            const telefone = document.getElementById('Telefone').value;
+    
+            
+            if (!imagem || !dono || !nome || !email || !telefone) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+    
+            
+            const novoCachorro = { imagem, dono, nome, email, telefone };
+            cachorros.push(novoCachorro);
+    
+            
+            document.getElementById('Imagem').value = '';
+            document.getElementById('Dono').value = '';
+            document.getElementById('Nome').value = '';
+            document.getElementById('Email').value = '';
+            document.getElementById('Telefone').value = '';
+            ocultarFormulario();
+    
+            
+            preencherTabela();
+        }
+    
+        function editarCachorro(index) {
+            const cachorro = cachorros[index];
+            document.getElementById('editNome').value = cachorro.nome;
+            document.getElementById('editDono').value = cachorro.dono;
+            document.getElementById('editEmail').value = cachorro.email;
+            document.getElementById('editTelefone').value = cachorro.telefone;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+    
+        function salvarEdicao() {
+            const index = cachorros.findIndex(c => c.nome === document.getElementById('editNome').value);
+            cachorros[index].nome = document.getElementById('editNome').value;
+            cachorros[index].dono = document.getElementById('editDono').value;
+            cachorros[index].email = document.getElementById('editEmail').value;
+            cachorros[index].telefone = document.getElementById('editTelefone').value;
+            fecharModal();
+            preencherTabela();
+        }
+    
+        function excluirCachorro(index) {
+            cachorros.splice(index, 1);
+            preencherTabela();
+        }
+    
+        function exibirFormulario() {
+            document.getElementById('formulario').style.display = 'block';
+        }
+    
+        function ocultarFormulario() {
+            document.getElementById('formulario').style.display = 'none';
+        }
+    
+        function fecharModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+    
+        preencherTabela();
+    </script>
+    
+    <script>
+
+        function preencherTabela() {
+            const tabela = document.getElementById('TabelaDosDogs').getElementsByTagName('tbody')[0];
+            tabela.innerHTML = '';  
+
+            
+            cachorros.forEach((cachorro, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${cachorro.imagem}" alt="Imagem do cachorro" width="50" height="50"></td>
+                    <td>${cachorro.dono}</td>
+                    <td>${cachorro.nome}</td>
+                    <td>${cachorro.email}</td>
+                    <td>${cachorro.telefone}</td>
+                    <td class="actions">
+                        <button onclick="editarCachorro(${index})">Editar</button>
+                        <button onclick="excluirCachorro(${index})">Excluir</button>
+                    </td>
+                `;
+                tabela.appendChild(tr);
+            });
+        }
+
+        function editarCachorro(index) {
+            const cachorro = cachorros[index];
+            document.getElementById('editNome').value = cachorro.nome;
+            document.getElementById('editDono').value = cachorro.dono;
+            document.getElementById('editEmail').value = cachorro.email;
+            document.getElementById('editTelefone').value = cachorro.telefone;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function salvarEdicao() {
+            const index = cachorros.findIndex(c => c.nome === document.getElementById('editNome').value);
+            cachorros[index].nome = document.getElementById('editNome').value;
+            cachorros[index].dono = document.getElementById('editDono').value;
+            cachorros[index].email = document.getElementById('editEmail').value;
+            cachorros[index].telefone = document.getElementById('editTelefone').value;
+            fecharModal();
+            preencherTabela();
+        }
+
+        function excluirCachorro(index) {
+            cachorros.splice(index, 1);
+            preencherTabela();
+        }
+
+        function exibirFormulario() {
+            document.getElementById('formulario').style.display = 'block';
+        }
+
+        function ocultarFormulario() {
+            document.getElementById('formulario').style.display = 'none';
+        }
+
+        function fecharModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        preencherTabela();
+    </script>
+</body>
+</html>
